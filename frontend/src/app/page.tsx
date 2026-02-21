@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,75 +12,40 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import apiClient from '@/lib/api';
+import { useDrugs, useConditions } from '@/hooks/use-api';
 import './page.css';
 
-import { Condition, SearchDrug } from '@/types';
-
 export default function Home() {
-  const [drugs, setDrugs] = useState<SearchDrug[]>([]);
-  const [filteredDrugs, setFilteredDrugs] = useState<SearchDrug[]>([]);
-  const [conditions, setConditions] = useState<Condition[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCondition, setSelectedCondition] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  
+  // Use cached data fetching hooks
+  const { data: drugsData, isLoading: drugsLoading, error: drugsError } = useDrugs({
+    page: currentPage,
+    limit: 20,
+    condition: selectedCondition,
+    search: searchTerm
+  });
+  const { data: conditionsData, isLoading: conditionsLoading, error: conditionsError } = useConditions();
+  
+  // Safely extract data with fallbacks
+  const drugs = drugsData?.drugs || [];
+  const conditions = Array.isArray(conditionsData) ? conditionsData : [];
+  const totalPages = drugsData?.totalPages || 1;
+  
+  // Loading and error states
+  const loading = drugsLoading || conditionsLoading;
+  const error = drugsError || conditionsError;
   const averageRating =
     drugs.length > 0
       ? drugs.reduce((sum, drug) => sum + drug.rating, 0) / drugs.length
       : 0;
   const totalHelpfulReviews = drugs.reduce((sum, drug) => sum + drug.usefulCount, 0);
 
-  useEffect(() => {
-    setCurrentPage(1);
-    fetchConditions();
-    fetchDrugs();
-  }, [selectedCondition, searchTerm]);
-
-  useEffect(() => {
-    fetchConditions();
-    fetchDrugs();
-  }, [currentPage]);
-
-  const fetchConditions = async () => {
-    try {
-      const data = await apiClient.getConditions();
-      const safeConditions = Array.isArray(data) ? data : [];
-      setConditions(safeConditions);
-    } catch (err) {
-      console.error('Error fetching conditions:', err);
-      setConditions([]);
-    }
-  };
-
-  const fetchDrugs = async () => {
-    setLoading(true);
-    try {
-      const data = await apiClient.getDrugs({
-        page: currentPage,
-        limit: 20,
-        condition: selectedCondition,
-        search: searchTerm
-      });
-      
-      setDrugs(data.drugs || []);
-      setTotalPages(data.totalPages || 1);
-      setError(null);
-    } catch (err) {
-      setError('Failed to fetch drugs. Please try again.');
-      console.error('Error fetching drugs:', err);
-      setDrugs([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     setCurrentPage(1);
-    fetchDrugs();
   };
 
   const handlePageChange = (page: number) => {
@@ -167,7 +132,7 @@ export default function Home() {
         </form>
       </section>
 
-      {error && <div className="error">{error}</div>}
+      {error && <div className="error">{typeof error === 'string' ? error : 'Failed to fetch data. Please try again.'}</div>}
 
       {loading && drugs.length === 0 ? (
         <div className="loading">Loading drugs...</div>

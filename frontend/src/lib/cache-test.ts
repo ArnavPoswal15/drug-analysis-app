@@ -2,8 +2,6 @@
 
 // Simple cache testing utilities
 export function testCachePerformance() {
-  const startTime = performance.now();
-  
   return {
     start: () => performance.now(),
     end: (start: number) => {
@@ -18,8 +16,6 @@ export function testCachePerformance() {
 
 // Test function to verify cache is working
 export async function verifyCaching() {
-  const timer = testCachePerformance();
-  
   try {
     // Import dynamically to avoid SSR issues
     const { CacheManager } = await import('./cache-manager');
