@@ -1,0 +1,32 @@
+{
+  "name": "drug-analysis-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "npm run build:frontend && npm run build:backend",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && npm run build",
+    "start": "cd backend && npm start",
+    "deploy:vercel": "cd frontend && npm run build && vercel --prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["drug", "analysis", "healthcare", "mern"],
+  "author": "",
+  "license": "ISC",
+  "description": "Drug Analysis Platform - Find effective medications based on real patient reviews",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
+
+
+
+
+
+
+
