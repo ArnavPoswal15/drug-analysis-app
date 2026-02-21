@@ -55,6 +55,18 @@ async function getDrugs(queryParams) {
 }
 
 async function getConditionCounts(queryParams) {
+  const hasExplicitPagination =
+    queryParams.page !== undefined || queryParams.limit !== undefined;
+  
+  if (!hasExplicitPagination) {
+    // Return all conditions when no pagination is specified
+    const conditionCounts = await Drug.aggregate([
+      { $group: { _id: '$condition', count: { $sum: 1 } } },
+      { $sort: { count: -1 } }
+    ]);
+    return conditionCounts;
+  }
+
   const { page, limit, skip } = getPaginationParams(queryParams);
   const conditionCounts = await Drug.aggregate([
     { $group: { _id: '$condition', count: { $sum: 1 } } },
@@ -69,12 +81,6 @@ async function getConditionCounts(queryParams) {
 
   const aggregated = conditionCounts[0] || { data: [], metadata: [] };
   const total = aggregated.metadata[0] ? aggregated.metadata[0].total : 0;
-  const hasExplicitPagination =
-    queryParams.page !== undefined || queryParams.limit !== undefined;
-
-  if (!hasExplicitPagination) {
-    return aggregated.data;
-  }
 
   return {
     conditions: aggregated.data,
