@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Select,
@@ -9,7 +9,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import apiClient from '@/lib/api';
+import { useTopDrugs, useConditions } from '@/hooks/use-api';
+import { RefreshButton } from '@/components/ui/refresh-button';
 import {
   Table,
   TableBody,
@@ -20,55 +21,28 @@ import {
 } from '@/components/ui/table';
 import './dashboard.css';
 
-interface Condition {
-  _id: string;
-  count: number;
-}
-
-interface Drug {
-  _id?: string;
-  drugName: string;
-  condition: string;
-  avgRating: number;
-  totalReviews: number;
-  totalUseful: number;
-  effectiveness: number;
-}
-
 export default function Dashboard() {
-  const [topDrugs, setTopDrugs] = useState<Drug[]>([]);
-  const [conditions, setConditions] = useState<Condition[]>([]);
-  const [loading, setLoading] = useState(true);
   const [selectedCondition, setSelectedCondition] = useState('');
+  
+  // Use cached data fetching hooks
+  const { data: topDrugsData, isLoading: topDrugsLoading, error: topDrugsError } = useTopDrugs(selectedCondition);
+  const { data: conditionsData, isLoading: conditionsLoading, error: conditionsError } = useConditions();
+  
+  // Safely extract data with fallbacks
+  const topDrugs = Array.isArray(topDrugsData) ? topDrugsData : [];
+  const conditions = Array.isArray(conditionsData) ? conditionsData : [];
+  
+  // Loading state
+  const loading = topDrugsLoading || conditionsLoading;
+  
+  // Error handling
+  const hasError = topDrugsError || conditionsError;
+  
   const totalReviews = conditions.reduce((sum, cond) => sum + cond.count, 0);
   const averageRating =
     topDrugs.length > 0
       ? topDrugs.reduce((sum, drug) => sum + drug.avgRating, 0) / topDrugs.length
       : 0;
-
-  useEffect(() => {
-    fetchDashboardData();
-  }, [selectedCondition]);
-
-  const fetchDashboardData = async () => {
-    setLoading(true);
-    try {
-      const [topDrugsData, conditionsData] = await Promise.all([
-        apiClient.getTopDrugs(selectedCondition),
-        apiClient.getConditions()
-      ]);
-
-      const safeTopDrugs = Array.isArray(topDrugsData) ? topDrugsData : [];
-      const safeConditions = Array.isArray(conditionsData) ? conditionsData : [];
-
-      setTopDrugs(safeTopDrugs);
-      setConditions(safeConditions);
-    } catch (error) {
-      console.error('Error fetching dashboard data:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const renderBarChart = <T extends { _id?: string; drugName?: string }>(
     data: T[],
@@ -103,6 +77,17 @@ export default function Dashboard() {
       </div>
     );
   };
+
+  if (hasError) {
+    return (
+      <div className="dashboard-container">
+        <div className="error-state">
+          <h2>Error loading dashboard data</h2>
+          <p>Please try refreshing the page or check your connection.</p>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return <div className="loading">Loading dashboard...</div>;
@@ -169,6 +154,9 @@ export default function Dashboard() {
               ))}
             </SelectContent>
           </Select>
+        </div>
+        <div className="refresh-controls">
+          <RefreshButton />
         </div>
       </section>
 

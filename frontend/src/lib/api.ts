@@ -1,3 +1,5 @@
+import { Condition, DashboardDrug, DrugResponse, HealthResponse } from '@/types';
+
 // API configuration with environment-based URL
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
 
@@ -49,28 +51,23 @@ class ApiClient {
     if (params.condition) searchParams.append('condition', params.condition);
     if (params.search) searchParams.append('search', params.search);
 
-    return this.request<{
-      drugs: any[];
-      totalPages: number;
-      currentPage: number;
-      total: number;
-    }>(`/api/drugs?${searchParams}`);
+    return this.request<DrugResponse>(`/api/drugs?${searchParams}`);
   }
 
   async getConditions() {
-    return this.request<any[]>('/api/drugs/conditions');
+    return this.request<Condition[]>('/api/drugs/conditions');
   }
 
   async getTopDrugs(condition?: string) {
     const endpoint = condition 
       ? `/api/drugs/top?condition=${encodeURIComponent(condition)}`
       : '/api/drugs/top';
-    return this.request<any[]>(endpoint);
+    return this.request<DashboardDrug[]>(endpoint);
   }
 
   // Health check
   async healthCheck() {
-    return this.request<{ status: string; timestamp: string }>('/health');
+    return this.request<HealthResponse>('/health');
   }
 }
 

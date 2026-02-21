@@ -15,22 +15,11 @@ import {
 import apiClient from '@/lib/api';
 import './page.css';
 
-interface Condition {
-  _id: string;
-  count: number;
-}
-
-interface Drug {
-  uniqueID: number;
-  drugName: string;
-  condition: string;
-  review: string;
-  rating: number;
-  usefulCount: number;
-}
+import { Condition, SearchDrug } from '@/types';
 
 export default function Home() {
-  const [drugs, setDrugs] = useState<Drug[]>([]);
+  const [drugs, setDrugs] = useState<SearchDrug[]>([]);
+  const [filteredDrugs, setFilteredDrugs] = useState<SearchDrug[]>([]);
   const [conditions, setConditions] = useState<Condition[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -104,7 +93,7 @@ export default function Home() {
     const windowSize = 5;
     const halfWindow = Math.floor(windowSize / 2);
     let start = Math.max(1, currentPage - halfWindow);
-    let end = Math.min(totalPages, start + windowSize - 1);
+    const end = Math.min(totalPages, start + windowSize - 1);
 
     // Keep a full window when possible.
     if (end - start + 1 < windowSize) {
