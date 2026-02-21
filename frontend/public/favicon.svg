@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7a8bff"/>
+      <stop offset="100%" stop-color="#4db8d8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded square background -->
+  <rect width="32" height="32" rx="7" fill="#0e1522"/>
+
+  <!-- Group: entire icon centered at 16,15 (slightly above true center to account for handle) -->
+  <g transform="translate(16, 14)">
+    <!-- Hexagon: spans from -8 to +8 vertically = 16px tall, centered -->
+    <polygon points="0,-9 7.8,-4.5 7.8,4.5 0,9 -7.8,4.5 -7.8,-4.5" fill="none" stroke="url(#g)" stroke-width="1.8"/>
+
+    <!-- Lens circle -->
+    <circle cx="0" cy="0" r="5" fill="none" stroke="url(#g)" stroke-width="1.6"/>
+
+    <!-- Medical cross, centered at 0,0 -->
+    <rect x="-1.2" y="-3" width="2.4" height="6" rx="0.7" fill="url(#g)"/>
+    <rect x="-3" y="-1.2" width="6" height="2.4" rx="0.7" fill="url(#g)"/>
+
+    <!-- Scope handle: starts at edge of circle, goes bottom-right -->
+    <line x1="3.5" y1="3.5" x2="7" y2="7.5" stroke="url(#g)" stroke-width="1.8" stroke-linecap="round"/>
+    <circle cx="7.5" cy="8" r="1" fill="#4db8d8"/>
+  </g>
+</svg>
