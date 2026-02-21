@@ -20,18 +20,18 @@ export const metadata: Metadata = {
   description: "Find effective medications based on real patient reviews",
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/favicon.ico?v=202502220250", sizes: "any" },
+      { url: "/favicon-32.png?v=202502220250", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-192.png?v=202502220250", sizes: "192x192", type: "image/png" },
     ],
     apple: [
-      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+      { url: "/apple-touch-icon.png?v=202502220250", sizes: "180x180", type: "image/png" },
     ],
   },
-  manifest: "/site.webmanifest",
+  manifest: "/site.webmanifest?v=202502220250",
   other: {
     "msapplication-TileColor": "#000000",
-    "msapplication-config": "/browserconfig.xml",
+    "msapplication-config": "/browserconfig.xml?v=202502220250",
   },
 };
 
@@ -49,13 +49,12 @@ export default function RootLayout({
           <nav className="navbar">
             <div className="site-nav-container">
               <Link href="/" className="site-nav-brand">
-                <Image src="/logo.svg" alt="MediScope" width={56} height={56} className="h-14 w-auto" />
+                <Image src="/logo.svg" alt="MediScope" width={56} height={56} className="h-15 w-auto" />
               </Link>
-              <div className="site-nav-links">
+              {/* <div className="site-nav-links">
                 <Link href="/" className="site-nav-link">Home</Link>
                 <Link href="/dashboard" className="site-nav-link">Dashboard</Link>
-                <Link href="/#filters" className="site-nav-link">Filters</Link>
-              </div>
+              </div> */}
               <Link href="/dashboard" className="site-nav-cta">Open Dashboard</Link>
             </div>
           </nav>

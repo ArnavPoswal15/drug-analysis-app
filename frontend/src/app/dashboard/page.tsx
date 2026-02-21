@@ -65,10 +65,13 @@ export default function Dashboard() {
                   className="bar" 
                   style={{ 
                     width: `${(Number(item[valueKey] ?? 0) / maxValue) * 100}%`,
-                    backgroundColor: barPalette[index % barPalette.length]
+                    backgroundColor: barPalette[index % barPalette.length],
+                    minWidth: '60px'
                   }}
                 >
-                  <span className="bar-value">{Number(item[valueKey] ?? 0).toFixed(1)}</span>
+                  <span className={`bar-value ${Number(item[valueKey] ?? 0) < 5000 ? 'bar-value-small' : ''}`}>
+                    {Number(item[valueKey] ?? 0).toFixed(1)}
+                  </span>
                 </div>
               </div>
             </div>

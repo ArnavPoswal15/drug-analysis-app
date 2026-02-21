@@ -4,6 +4,9 @@ import Link from 'next/link';
 export const metadata = {
   title: 'Drug Analysis Platform',
   description: 'Find effective medications based on real patient reviews',
+  icons: {
+    icon: "/favicon.ico",
+  },
 };
 
 export default function RootLayout({ children }) {
