@@ -117,7 +117,7 @@ export default function Home() {
               </SelectTrigger>
               <SelectContent className="border-slate-200 bg-white text-slate-900 shadow-xl">
                 <SelectItem value="all">All Conditions</SelectItem>
-                {conditions.map((condition) => (
+                {conditions.filter(condition => condition._id && condition._id.trim() !== '').map((condition) => (
                   <SelectItem key={condition._id} value={condition._id}>
                     {condition._id} ({condition.count})
                   </SelectItem>
