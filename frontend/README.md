@@ -191,7 +191,24 @@ interface Condition {
 
 📖 **See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions**
 
-## 🔍 Key Features Explained
+## � Data Analysis & Sentiment Analysis
+
+### Data Processing
+All data analysis and sentiment analysis was performed by **Arnav Poswal**. This included:
+
+- **Data Collection**: Gathering patient drug reviews and ratings from various sources
+- **Data Cleaning**: Processing and standardizing drug information, conditions, and reviews
+- **Sentiment Analysis**: Implementing natural language processing to analyze patient sentiment in reviews
+- **Effectiveness Scoring**: Creating algorithms to calculate drug effectiveness based on patient ratings and usefulness votes
+- **Statistical Analysis**: Generating insights on drug performance across different medical conditions
+
+### Key Analysis Features
+- **Sentiment Classification**: Categorizing patient reviews as positive, negative, or neutral
+- **Effectiveness Metrics**: Calculating composite scores based on ratings and review helpfulness
+- **Condition-Specific Insights**: Analyzing drug performance within specific medical conditions
+- **Trend Analysis**: Identifying patterns in patient satisfaction and drug popularity
+
+## �🔍 Key Features Explained
 
 ### Dashboard Statistics
 - **Total Reviews**: Cumulative count of all patient reviews
