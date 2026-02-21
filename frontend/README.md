@@ -105,10 +105,10 @@ Create a `.env` file in the root directory:
 
 ```bash
 # API Configuration
-NEXT_PUBLIC_API_URL=http://localhost:5001
+NEXT_PUBLIC_API_URL=https://drug-analysis-app.onrender.com
 
-# For Production
-NEXT_PUBLIC_API_URL=https://your-backend-domain.com
+# For Development
+NEXT_PUBLIC_API_URL=http://localhost:5001
 ```
 
 ### Backend Setup
@@ -239,7 +239,7 @@ This project is licensed under the MIT License.
 
 ## 🔗 Links
 
-- [Live Demo](#) (add when deployed)
+- [Live Demo](https://drug-analysis-app.onrender.com)
 - [Backend Repository](#) (link to backend repo)
 - [API Documentation](#) (add API docs link)
 
