@@ -63,7 +63,6 @@ npm run dev
 - `GET /api/drugs/top` - Get top drugs by condition
 
 ## Project Structure
-
 ```
 drug-analysis-app/
 ├── backend/
